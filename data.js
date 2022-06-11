@@ -7,16 +7,43 @@ export const data = {
       category: "Sport",
       pictures: [
         {
-          img: "https://source.unsplash.com/random/900%C3%97700/?sport",
-          date: "2020-05-01",
+          category: "Fotboll",
+          images: [
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?sport",
+              date: "2020-05-01",
+            },
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+          ],
         },
         {
-          img: "https://source.unsplash.com/random/900%C3%97700/?sport",
-          date: "2020-05-01",
+          category: "Basket",
+          images: [
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?water",
+              date: "2020-05-01",
+            },
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?animal",
+              date: "2020-05-01",
+            },
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?world",
+              date: "2020-05-01",
+            },
+          ],
         },
         {
-          img: "https://source.unsplash.com/random/900%C3%97700/?sport",
-          date: "2020-05-01",
+          category: "Handboll",
+          images: [
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?movie",
+              date: "2020-05-01",
+            },
+          ],
         },
       ],
     },
@@ -25,16 +52,51 @@ export const data = {
       category: "Nature",
       pictures: [
         {
-          img: "https://source.unsplash.com/random/900%C3%97700/?nature",
-          date: "2017-10-31T12:00:00.000Z",
+          category: "Fåglar",
+          images: [
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+          ],
         },
         {
-          img: "https://source.unsplash.com/random/900%C3%97700/?nature",
-          date: "2018-10-31T12:00:00.000Z",
+          category: "Natur",
+          images: [
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+          ],
         },
         {
-          img: "https://source.unsplash.com/random/900%C3%97700/?nature",
-          date: "2019-10-31T12:00:00.000Z",
+          category: "Apor",
+          images: [
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+          ],
         },
       ],
     },
@@ -43,16 +105,39 @@ export const data = {
       category: "Computer",
       pictures: [
         {
-          img: "https://source.unsplash.com/WLUHO9A_xik/1600x900",
-          date: "2020-05-01",
+          category: "Möss",
+          images: [
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+          ],
         },
         {
-          img: "https://source.unsplash.com/WLUHO9A_xik/1600x900",
-          date: "2020-05-02",
+          category: "Skärm",
+          images: [
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+          ],
         },
         {
-          img: "https://source.unsplash.com/WLUHO9A_xik/1600x900",
-          date: "2020-05-03",
+          category: "Tangentbord",
+          images: [
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+            {
+              img: "https://source.unsplash.com/random/900%C3%97700/?nature",
+              date: "2020-05-01",
+            },
+          ],
         },
       ],
     },
