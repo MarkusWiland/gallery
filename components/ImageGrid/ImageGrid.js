@@ -1,24 +1,25 @@
 import React from "react";
 import Image from "next/image";
 import styles from "../../styles/Home.module.css";
-const ImageGrid = ({ setSelectedImg, find }) => {
+const ImageGrid = ({ setSelectedImg, images }) => {
+  console.log("images", images);
   return (
     <div className={styles.categoriesImage}>
-      {find?.pictures.map((images) => {
-        return images.images.map((img, i) => (
+      {images?.map((images, i) => {
+        return (
           <>
-            <div key={img.img} onClick={() => setSelectedImg(img.img)}>
+            <div key={images.img} onClick={() => setSelectedImg(images.img)}>
               <Image
-                src={img.img}
-                onClick={() => setSelectedImg(img.img)}
+                src={images.img}
+                onClick={() => setSelectedImg(images.img)}
                 width={300}
                 height={300}
                 key={i}
-                alt={img.img}
+                alt={images.img}
               />
             </div>
           </>
-        ));
+        );
       })}
     </div>
   );

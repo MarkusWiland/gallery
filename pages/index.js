@@ -33,7 +33,7 @@ export default function Home({ images }) {
         <h1>{data.name}</h1>
         <h3>{data.location}</h3>
         <section className={styles.grid}>
-          {/* {images
+          {images
             .map((o) => o.category)
             .filter((o, i, self) => self.indexOf(o) === i)
             .map((category, i) => (
@@ -59,7 +59,7 @@ export default function Home({ images }) {
                   })}
                 </div>
               </div>
-            ))} */}
+            ))}
           {/* {categories &&
             categories.categories?.map((category, i) => (
               <div className={styles.gridItem} key={i}>
@@ -91,12 +91,8 @@ export default function Home({ images }) {
   );
 }
 export async function getStaticProps() {
-  const { data, error } = await supabaseAdmin.storage
-    .from("gallery")
-    .list("categories/sport", {
-      limit: 100,
-      offset: 0,
-    });
+  const { data, error } = await supabaseAdmin.from("GalleryTable").select("*");
+
   return {
     props: {
       images: data,
