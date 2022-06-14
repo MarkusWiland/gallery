@@ -5,17 +5,17 @@ const ImageGrid = ({ setSelectedImg, images }) => {
   console.log("images", images);
   return (
     <div className={styles.categoriesImage}>
-      {images?.map((images, i) => {
+      {images?.map((image, i) => {
         return (
           <>
-            <div key={images.img} onClick={() => setSelectedImg(images.img)}>
+            <div key={image.img} onClick={() => setSelectedImg(image.img)}>
               <Image
-                src={images.img}
-                onClick={() => setSelectedImg(images.img)}
+                src={`https://wkvxfukoitljukptneli.supabase.co/storage/v1/object/public/gallery/${image.img}`}
+                onClick={() => setSelectedImg(image.img)}
                 width={300}
                 height={300}
                 key={i}
-                alt={images.img}
+                alt={image.img}
               />
             </div>
           </>

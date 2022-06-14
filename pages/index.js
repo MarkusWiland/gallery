@@ -5,14 +5,32 @@ import styles from "../styles/Home.module.css";
 import { data } from "../data";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
-
+import { useForm } from "react-hook-form";
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
 );
 export default function Home({ images }) {
   console.log("IMAGES", images);
+  const { register, handleSubmit, reset } = useForm();
+  const onSubmit = async (post) => {
+    console.log(post.file[0]);
+    try {
+      await supabaseAdmin.storage
+        .from("gallery")
+        .upload(`${post.file[0].name}`, post.file[0]);
 
+      await supabaseAdmin.from("GalleryTable").insert([
+        {
+          category: post.category,
+          categoryChild: post.categoryChild,
+          img: post.file[0].name,
+        },
+      ]);
+
+      reset();
+    } catch (err) {}
+  };
   // useEffect(() => {
   //   const fetchData = async () => {
   //     const response = await fetch("/api/categories/categories");
@@ -30,6 +48,19 @@ export default function Home({ images }) {
       </Head>
 
       <main className="section">
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          <label>Title</label>
+          <input {...register("category", { required: true, maxLength: 20 })} />
+          <label>sub</label>
+          <input {...register("categoryChild", { pattern: /^[A-Za-z]+$/i })} />
+          <label>content</label>
+          <input {...register("file")} type="file" />
+          <label>img</label>
+          <textarea {...register("content")} />
+
+          <button type="submit">Skicka</button>
+        </form>
+
         <h1>{data.name}</h1>
         <h3>{data.location}</h3>
         <section className={styles.grid}>

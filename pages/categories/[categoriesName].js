@@ -28,7 +28,7 @@ export default function CategoriesName() {
       setImages(filterData);
     }
     getdData();
-  }, []);
+  }, [routerName]);
 
   return (
     <div className="section">
