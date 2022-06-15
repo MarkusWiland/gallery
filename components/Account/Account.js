@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../../utils/supabaseClient";
+import { supabaseAuth } from "../../utils/supabaseClient";
 export default function Account({ session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
@@ -13,9 +13,9 @@ export default function Account({ session }) {
   async function getProfile() {
     try {
       setLoading(true);
-      const user = supabase.auth.user();
+      const user = supabaseAuth.auth.user();
 
-      let { data, error, status } = await supabase
+      let { data, error, status } = await supabaseAuth
         .from("profiles")
         .select(`username, website, avatar_url`)
         .eq("id", user.id)
