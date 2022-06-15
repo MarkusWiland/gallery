@@ -12,7 +12,12 @@ const Modal = ({ setSelectedImg, selectedImg }) => {
     <>
       <div className="backdrop" onClick={handleClick}>
         <div className="ModalContent">
-          <Image src={selectedImg} width={600} height={600} alt={"alt"} />
+          <Image
+            src={`https://wkvxfukoitljukptneli.supabase.co/storage/v1/object/public/gallery/${selectedImg.category}/${selectedImg.categoryChild}/${selectedImg.img}`}
+            width={600}
+            height={600}
+            alt={"alt"}
+          />
           <p>{selectedImg.date}</p>
         </div>
       </div>

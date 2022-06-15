@@ -11,29 +11,17 @@ const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
 );
-export default function CategoriesName() {
+export default function CategoriesName({ images }) {
+  console.log("IMAGES", images);
   const [selectedImg, setSelectedImg] = useState(null);
-  const [image, setImages] = useState([]);
-  const [cat, setCat] = useState([]);
 
-  const router = useRouter();
-  const routerName = router.query.categoriesName;
-  useEffect(() => {
-    async function getdData() {
-      let { data } = await supabaseAdmin.from("GalleryTable").select("*");
-      const filterData = data.filter(
-        (category) => category.category === routerName
-      );
-
-      setImages(filterData);
-    }
-    getdData();
-  }, [routerName]);
+  const [image, setImages] = useState(images);
+  const [categoryNames, setCategoryNames] = useState(images);
 
   return (
     <div className="section">
       <div className={styles.buttonsDiv}>
-        <CategoriesHeader image={image} />
+        <CategoriesHeader images={categoryNames} setImages={setImages} />
       </div>
       <div>
         <ImageGrid setSelectedImg={setSelectedImg} images={image} />
@@ -43,4 +31,26 @@ export default function CategoriesName() {
       </div>
     </div>
   );
+}
+export const getStaticPaths = async () => {
+  const { data, error } = await supabaseAdmin.from("GalleryTable").select("*");
+  const paths = data.map((slug) => {
+    return {
+      params: { categoriesName: slug.category },
+    };
+  });
+  return { paths, fallback: false };
+};
+export async function getStaticProps({ params }) {
+  const { data, error } = await supabaseAdmin
+    .from("GalleryTable")
+    .select("*")
+    .eq("category", params.categoriesName)
+    .order("created_at", { ascending: false });
+
+  return {
+    props: {
+      images: data,
+    },
+  };
 }

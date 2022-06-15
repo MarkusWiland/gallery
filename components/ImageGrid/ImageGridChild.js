@@ -8,12 +8,9 @@ const ImageGridChild = ({ setSelectedImg, categories }) => {
         {categories.map((category, i) => {
           return (
             <>
-              <div
-                key={category.img}
-                onClick={() => setSelectedImg(category.img)}
-              >
+              <div key={category.img} onClick={() => setSelectedImg(category)}>
                 <Image
-                  src={category.img}
+                  src={`https://wkvxfukoitljukptneli.supabase.co/storage/v1/object/public/gallery/${category.category}/${category.categoryChild}/${category.img}`}
                   width={200}
                   height={200}
                   alt={category.img}

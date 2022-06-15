@@ -2,29 +2,35 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { data } from "../data";
 import Link from "next/link";
+import DatePicker, { registerLocale } from "react-datepicker";
+import sv from "date-fns/locale/sv"; // the locale you want
+registerLocale("sv", sv);
 import { createClient } from "@supabase/supabase-js";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import "react-datepicker/dist/react-datepicker.css";
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
 );
+
 export default function Home({ images }) {
-  console.log("IMAGES", images);
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, watch, control } = useForm();
   const onSubmit = async (post) => {
-    console.log(post.file[0]);
     try {
       await supabaseAdmin.storage
         .from("gallery")
-        .upload(`${post.file[0].name}`, post.file[0]);
+        .upload(
+          `${post.category}/${post.categoryChild}/${post.file[0].name}`,
+          post.file[0]
+        );
 
       await supabaseAdmin.from("GalleryTable").insert([
         {
           category: post.category,
           categoryChild: post.categoryChild,
           img: post.file[0].name,
+          date: watch("dateInput")?.toLocaleString("sv-SE").substr(0, 10),
         },
       ]);
 
@@ -39,6 +45,7 @@ export default function Home({ images }) {
   //   };
   //   fetchData();
   // }, []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -49,20 +56,31 @@ export default function Home({ images }) {
 
       <main className="section">
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <label>Title</label>
+          <label>Kategori</label>
           <input {...register("category", { required: true, maxLength: 20 })} />
-          <label>sub</label>
+          <label>Kategori Child</label>
           <input {...register("categoryChild", { pattern: /^[A-Za-z]+$/i })} />
-          <label>content</label>
+          <label>Välj bild</label>
           <input {...register("file")} type="file" />
-          <label>img</label>
-          <textarea {...register("content")} />
+          <label>Välj Datum</label>
+          <Controller
+            control={control}
+            name="dateInput"
+            render={({ field }) => (
+              <DatePicker
+                locale="sv"
+                placeholderText="Välj datum"
+                onChange={(date) => field.onChange(date)}
+                selected={field.value}
+              />
+            )}
+          />
 
           <button type="submit">Skicka</button>
         </form>
 
-        <h1>{data.name}</h1>
-        <h3>{data.location}</h3>
+        <h1>Markus Wiland</h1>
+        <h3>Location</h3>
         <section className={styles.grid}>
           {images
             .map((o) => o.category)
@@ -74,10 +92,10 @@ export default function Home({ images }) {
                   {images.map((o, i) => {
                     if (o.category === category) {
                       return (
-                        <Link href={`/categories/${o.category}`} key={i}>
+                        <Link href={`/categories/${o.category}`} key={o.id}>
                           <span>
                             <Image
-                              src={o.img}
+                              src={`https://wkvxfukoitljukptneli.supabase.co/storage/v1/object/public/gallery/${o.category}/${o.categoryChild}/${o.img}`}
                               width={300}
                               height={300}
                               alt={o.img}
