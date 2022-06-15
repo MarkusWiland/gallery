@@ -3,48 +3,20 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
-import DatePicker, { registerLocale } from "react-datepicker";
-import sv from "date-fns/locale/sv"; // the locale you want
-registerLocale("sv", sv);
-import { createClient } from "@supabase/supabase-js";
-import { Controller, useForm } from "react-hook-form";
-import "react-datepicker/dist/react-datepicker.css";
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
-);
+import { supabase } from "../utils/supabaseClient";
+import Auth from "../components/Auth/Auth";
+import Form from "../components/Form/Form";
 
 export default function Home({ images }) {
-  const { register, handleSubmit, reset, watch, control } = useForm();
-  const onSubmit = async (post) => {
-    try {
-      await supabaseAdmin.storage
-        .from("gallery")
-        .upload(
-          `${post.category}/${post.categoryChild}/${post.file[0].name}`,
-          post.file[0]
-        );
+  const [session, setSession] = useState(null);
 
-      await supabaseAdmin.from("GalleryTable").insert([
-        {
-          category: post.category,
-          categoryChild: post.categoryChild,
-          img: post.file[0].name,
-          date: watch("dateInput")?.toLocaleString("sv-SE").substr(0, 10),
-        },
-      ]);
+  useEffect(() => {
+    setSession(supabase.auth.session());
 
-      reset();
-    } catch (err) {}
-  };
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await fetch("/api/categories/categories");
-  //     const json = await response.json();
-  //     setCategories(json);
-  //   };
-  //   fetchData();
-  // }, []);
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -55,29 +27,7 @@ export default function Home({ images }) {
       </Head>
 
       <main className="section">
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <label>Kategori</label>
-          <input {...register("category", { required: true, maxLength: 20 })} />
-          <label>Kategori Child</label>
-          <input {...register("categoryChild", { pattern: /^[A-Za-z]+$/i })} />
-          <label>Välj bild</label>
-          <input {...register("file")} type="file" />
-          <label>Välj Datum</label>
-          <Controller
-            control={control}
-            name="dateInput"
-            render={({ field }) => (
-              <DatePicker
-                locale="sv"
-                placeholderText="Välj datum"
-                onChange={(date) => field.onChange(date)}
-                selected={field.value}
-              />
-            )}
-          />
-
-          <button type="submit">Skicka</button>
-        </form>
+        {!session ? <Auth /> : <Form />}
 
         <h1>Markus Wiland</h1>
         <h3>Location</h3>
@@ -140,7 +90,7 @@ export default function Home({ images }) {
   );
 }
 export async function getStaticProps() {
-  const { data, error } = await supabaseAdmin.from("GalleryTable").select("*");
+  const { data, error } = await supabase.from("GalleryTable").select("*");
 
   return {
     props: {

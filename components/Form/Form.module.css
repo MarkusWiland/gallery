@@ -1,0 +1,12 @@
+.form{
+    width: 100%;
+    display: flex;
+    color: white;
+    flex-direction: column;
+}
+.form label{
+    padding: .2rem 0rem;
+}
+.form input, .form button{
+    padding: .5rem;
+}

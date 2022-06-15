@@ -9,7 +9,13 @@ export default function CategoriesHeader({ images, setImages }) {
       self.findIndex((o) => o.categoryChild === a.categoryChild) === i
   );
   const [categoryChildSelected, setCategoryChildSelected] = useState(null);
-  const filt = images.filter((a) => a.categoryChild === categoryChildSelected);
+  const filt = images.filter((a) => {
+    if (categoryChildSelected === null) {
+      return images;
+    } else {
+      return a.categoryChild === categoryChildSelected;
+    }
+  });
   useEffect(() => {
     if (filt.length > 0) {
       setImages(filt);
@@ -20,15 +26,23 @@ export default function CategoriesHeader({ images, setImages }) {
       <button className={styles.button} onClick={() => router.back()}>
         Tillbaka
       </button>
+      <button
+        className={styles.button}
+        onClick={() => setCategoryChildSelected(null)}
+      >
+        All
+      </button>
       {filtData?.map((o, i) => (
-        <div key={o.id} className={styles.button}>
+        <>
           <button
+            key={o.id}
+            className={styles.button}
             // href={`/categories/${routerName}/${o.categoryChild}`}
             onClick={() => setCategoryChildSelected(o.categoryChild)}
           >
             {o.categoryChild}
           </button>
-        </div>
+        </>
       ))}
     </>
   );
