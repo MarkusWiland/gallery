@@ -8,7 +8,7 @@ const ImageGrid = ({ setSelectedImg, images }) => {
         return (
           <div key={image.id} className={styles.imgPadding}>
             <Image
-              src={`${process.env.NEXT_PUBLIC_IMAGELINK}${image.category}/${image.categoryChild}/${image.img}`}
+              src={`${process.env.NEXT_PUBLIC_SUPABASE_IMAGELINK}${image.category}/${image.categoryChild}/${image.img}`}
               onClick={() => setSelectedImg(image)}
               width={300}
               height={300}

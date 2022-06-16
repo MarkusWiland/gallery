@@ -47,7 +47,7 @@ export default function Home({ images }) {
                         <Link href={`/categories/${o.category}`} key={o.id}>
                           <span>
                             <Image
-                              src={`${process.env.NEXT_PUBLIC_IMAGELINK}${o.category}/${o.categoryChild}/${o.img}`}
+                              src={`${process.env.NEXT_PUBLIC_SUPABASE_IMAGELINK}${o.category}/${o.categoryChild}/${o.img}`}
                               width={300}
                               height={300}
                               className={styles.imgPic}

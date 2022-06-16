@@ -12,22 +12,24 @@ const Modal = ({ setSelectedImg, selectedImg }) => {
     <>
       <div className="backdrop" onClick={handleClick}>
         <div className="ModalContent">
+          <div>icon</div>
           <Image
-            src={`${process.env.NEXT_PUBLIC_IMAGELINK}${selectedImg.category}/${selectedImg.categoryChild}/${selectedImg.img}`}
+            src={`${process.env.NEXT_PUBLIC_SUPABASE_IMAGELINK}${selectedImg.category}/${selectedImg.categoryChild}/${selectedImg.img}`}
             width={600}
             height={600}
             alt={selectedImg.img}
             className="ModalImage"
-            priority
           />
-          <p>{selectedImg.date}</p>
-          <p>
-            {selectedImg.taken ? (
-              selectedImg.taken
-            ) : (
-              <i>Inget specifierat område.</i>
-            )}
-          </p>
+          <div>
+            <p>{selectedImg.date}</p>
+            <p>
+              {selectedImg.taken ? (
+                selectedImg.taken
+              ) : (
+                <i>Inget specifierat område.</i>
+              )}
+            </p>
+          </div>
         </div>
       </div>
     </>
