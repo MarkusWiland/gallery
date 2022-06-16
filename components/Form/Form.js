@@ -70,9 +70,9 @@ export default function Form() {
 
         <button type="submit">Skicka</button>
       </form>
-      {/* <button className="button block" onClick={() => supabase.auth.signOut()}>
+      <button className="button block" onClick={() => supabase.auth.signOut()}>
         Sign Out
-      </button> */}
+      </button>
       <ToastContainer />
     </>
   );
