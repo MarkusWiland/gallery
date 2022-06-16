@@ -67,14 +67,27 @@
 }
 
 
-.gridChilds{
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
+
+
+.imgPadding{
+  padding: 0rem 0rem 0rem 0rem;
+  background-color: rgb(237, 237, 237);
+  border-radius: 4px;
+  box-shadow: 1px 2px 5px 2px rgba(83, 83, 83, 0.4);
+
 }
-.gridChilds > div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.imgPadding > p{
+  font-size: smaller;
+  padding: 0rem 0rem .3rem 0rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-style: italic;
+}
+.imageGridImg {
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+
+}
+.imageGridImg:hover{
+  cursor: pointer;
 }

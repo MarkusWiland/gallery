@@ -13,12 +13,21 @@ const Modal = ({ setSelectedImg, selectedImg }) => {
       <div className="backdrop" onClick={handleClick}>
         <div className="ModalContent">
           <Image
-            src={`https://wkvxfukoitljukptneli.supabase.co/storage/v1/object/public/gallery/${selectedImg.category}/${selectedImg.categoryChild}/${selectedImg.img}`}
+            src={`${process.env.NEXT_PUBLIC_IMAGELINK}${selectedImg.category}/${selectedImg.categoryChild}/${selectedImg.img}`}
             width={600}
             height={600}
-            alt={"alt"}
+            alt={selectedImg.img}
+            className="ModalImage"
+            priority
           />
           <p>{selectedImg.date}</p>
+          <p>
+            {selectedImg.taken ? (
+              selectedImg.taken
+            ) : (
+              <i>Inget specifierat område.</i>
+            )}
+          </p>
         </div>
       </div>
     </>

@@ -10,11 +10,13 @@ import Form from "../components/Form/Form";
 export default function Home({ images }) {
   const [session, setSession] = useState(null);
 
+  const user = supabase.auth.user();
   useEffect(() => {
     setSession(supabase.auth.session());
 
-    supabase.auth.onAuthStateChange((_event, session) => {
+    supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
+      console.log("session", session);
     });
   }, []);
 
@@ -29,7 +31,7 @@ export default function Home({ images }) {
       <main className="section">
         {!session ? <Auth /> : <Form />}
 
-        <h1>Markus Wiland</h1>
+        <h1>{user ? user.email : "Markus Wiland"}</h1>
         <h3>Location</h3>
         <section className={styles.grid}>
           {images
@@ -45,7 +47,7 @@ export default function Home({ images }) {
                         <Link href={`/categories/${o.category}`} key={o.id}>
                           <span>
                             <Image
-                              src={`https://wkvxfukoitljukptneli.supabase.co/storage/v1/object/public/gallery/${o.category}/${o.categoryChild}/${o.img}`}
+                              src={`${process.env.NEXT_PUBLIC_IMAGELINK}${o.category}/${o.categoryChild}/${o.img}`}
                               width={300}
                               height={300}
                               alt={o.img}

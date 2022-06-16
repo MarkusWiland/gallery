@@ -6,14 +6,16 @@ const ImageGrid = ({ setSelectedImg, images }) => {
     <div className={styles.categoriesImage}>
       {images?.map((image, i) => {
         return (
-          <div key={image.id}>
+          <div key={image.id} className={styles.imgPadding}>
             <Image
-              src={`https://wkvxfukoitljukptneli.supabase.co/storage/v1/object/public/gallery/${image.category}/${image.categoryChild}/${image.img}`}
+              src={`${process.env.NEXT_PUBLIC_IMAGELINK}${image.category}/${image.categoryChild}/${image.img}`}
               onClick={() => setSelectedImg(image)}
               width={300}
               height={300}
+              className={styles.imageGridImg}
               alt={image.img}
             />
+            {image.date ? <p>{image.date}</p> : ""}
           </div>
         );
       })}
