@@ -50,6 +50,7 @@ export default function Home({ images }) {
                               src={`${process.env.NEXT_PUBLIC_IMAGELINK}${o.category}/${o.categoryChild}/${o.img}`}
                               width={300}
                               height={300}
+                              className={styles.imgPic}
                               alt={o.img}
                             />
                             <p className={styles.pictureDate}>{o.date}</p>
