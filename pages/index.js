@@ -8,17 +8,17 @@ import Auth from "../components/Auth/Auth";
 import Form from "../components/Form/Form";
 
 export default function Home({ images }) {
-  const [session, setSession] = useState(null);
+  // const [session, setSession] = useState(null);
 
-  const user = supabase.auth.user();
-  useEffect(() => {
-    setSession(supabase.auth.session());
+  // const user = supabase.auth.user();
+  // useEffect(() => {
+  //   setSession(supabase.auth.session());
 
-    supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
-      console.log("session", session);
-    });
-  }, []);
+  //   supabase.auth.onAuthStateChange((event, session) => {
+  //     setSession(session);
+  //     console.log("session", session);
+  //   });
+  // }, []);
 
   return (
     <div className={styles.container}>
@@ -29,9 +29,7 @@ export default function Home({ images }) {
       </Head>
 
       <main className="section">
-        {!session ? <Auth /> : <Form />}
-
-        <h1>{user ? user.email : "Markus Wiland"}</h1>
+        <Form />
         <h3>Location</h3>
         <section className={styles.grid}>
           {images
@@ -99,6 +97,7 @@ export async function getStaticProps() {
     props: {
       images: data,
     },
+    revalidate: 10,
   };
 }
 // export async function getStaticProps() {

@@ -24,9 +24,9 @@ const Modal = ({ setSelectedImg, selectedImg }) => {
             <p>{selectedImg.date}</p>
             <p>
               {selectedImg.taken ? (
-                selectedImg.taken
+                selectedImg.takenasd
               ) : (
-                <i>Inget specifierat område.</i>
+                <i>Inget specifieasdasdasdasdrat område.</i>
               )}
             </p>
           </div>

@@ -16,6 +16,7 @@ import { supabase } from "../../utils/supabaseClient";
 export default function Form() {
   const { register, handleSubmit, reset, watch, control } = useForm();
   const onSubmit = async (post) => {
+    console.log(post);
     try {
       await supabase.storage
         .from("gallery")
@@ -69,9 +70,9 @@ export default function Form() {
 
         <button type="submit">Skicka</button>
       </form>
-      <button className="button block" onClick={() => supabase.auth.signOut()}>
+      {/* <button className="button block" onClick={() => supabase.auth.signOut()}>
         Sign Out
-      </button>
+      </button> */}
       <ToastContainer />
     </>
   );
