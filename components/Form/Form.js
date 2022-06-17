@@ -1,6 +1,5 @@
 import React from "react";
 // REACT HOOK FORM
-
 import DatePicker, { registerLocale } from "react-datepicker";
 import { Controller, useForm } from "react-hook-form";
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,7 +15,7 @@ import { supabase } from "../../utils/supabaseClient";
 export default function Form() {
   const { register, handleSubmit, reset, watch, control } = useForm();
   const onSubmit = async (post) => {
-    console.log(post);
+    console.log("user", supabase.auth.user());
     try {
       await supabase.storage
         .from("gallery")
@@ -24,7 +23,6 @@ export default function Form() {
           `${post.category}/${post.categoryChild}/${post.file[0].name}`,
           post.file[0]
         );
-
       await supabase.from("GalleryTable").insert([
         {
           category: post.category.toLowerCase(),
@@ -53,7 +51,7 @@ export default function Form() {
         <label>Kategori Child</label>
         <input {...register("categoryChild", { pattern: /^[A-Za-z]+$/i })} />
         <label>Välj bild</label>
-        <input {...register("file")} type="file" />
+        <input {...register("file")} type="file" name="file" />
         <label>Välj Datum</label>
         <Controller
           control={control}
@@ -70,9 +68,11 @@ export default function Form() {
 
         <button type="submit">Skicka</button>
       </form>
+
       <button className="button block" onClick={() => supabase.auth.signOut()}>
         Sign Out
       </button>
+
       <ToastContainer />
     </>
   );
