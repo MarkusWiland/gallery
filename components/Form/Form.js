@@ -1,6 +1,5 @@
 import React from "react";
 // REACT HOOK FORM
-
 import DatePicker, { registerLocale } from "react-datepicker";
 import { Controller, useForm } from "react-hook-form";
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,7 +15,7 @@ import { supabase } from "../../utils/supabaseClient";
 export default function Form() {
   const { register, handleSubmit, reset, watch, control } = useForm();
   const onSubmit = async (post) => {
-    console.log(post);
+    console.log("user", supabase.auth.user());
     try {
       const storeImages = await supabase.storage
         .from("gallery")
@@ -24,8 +23,12 @@ export default function Form() {
           `${post.category}/${post.categoryChild}/${post.file[0].name}`,
           post.file[0]
         );
+<<<<<<< HEAD
 
       const addRow = await supabase.from("GalleryTable").insert([
+=======
+      await supabase.from("GalleryTable").insert([
+>>>>>>> 210126b880f008ea5e07247261b6f677da020f17
         {
           category: post.category.toLowerCase(),
           categoryChild: post.categoryChild.toLowerCase(),
@@ -72,9 +75,11 @@ export default function Form() {
         />
         <button type="submit">Skicka</button>
       </form>
+
       <button className="button block" onClick={() => supabase.auth.signOut()}>
         Sign Out
       </button>
+
       <ToastContainer />
     </>
   );
