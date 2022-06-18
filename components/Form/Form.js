@@ -18,14 +18,14 @@ export default function Form() {
   const onSubmit = async (post) => {
     console.log(post);
     try {
-      await supabase.storage
+      const storeImages = await supabase.storage
         .from("gallery")
         .upload(
           `${post.category}/${post.categoryChild}/${post.file[0].name}`,
           post.file[0]
         );
 
-      await supabase.from("GalleryTable").insert([
+      const addRow = await supabase.from("GalleryTable").insert([
         {
           category: post.category.toLowerCase(),
           categoryChild: post.categoryChild.toLowerCase(),
@@ -33,9 +33,12 @@ export default function Form() {
           date: watch("dateInput")?.toLocaleString("sv-SE").substr(0, 10),
         },
       ]);
-      toast.success("Du har nu lagt till en post", {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 3000,
+      Promise.all([storeImages, addRow]).then(() => {
+        toast.success("Lagt till!", {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 3000,
+          closeButton: true,
+        });
       });
       reset();
     } catch (err) {
@@ -53,7 +56,7 @@ export default function Form() {
         <label>Kategori Child</label>
         <input {...register("categoryChild", { pattern: /^[A-Za-z]+$/i })} />
         <label>Välj bild</label>
-        <input {...register("file")} type="file" />
+        <input {...register("file")} type="file" name="file" />
         <label>Välj Datum</label>
         <Controller
           control={control}
@@ -67,7 +70,6 @@ export default function Form() {
             />
           )}
         />
-
         <button type="submit">Skicka</button>
       </form>
       <button className="button block" onClick={() => supabase.auth.signOut()}>

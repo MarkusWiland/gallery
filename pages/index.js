@@ -9,7 +9,10 @@ import Form from "../components/Form/Form";
 
 export default function Home({ images }) {
   const [session, setSession] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const cn = (...classes) => {
+    return classes.filter(Boolean).join(" ");
+  };
   const user = supabase.auth.user();
   useEffect(() => {
     setSession(supabase.auth.session());
@@ -49,7 +52,12 @@ export default function Home({ images }) {
                               src={`${process.env.NEXT_PUBLIC_SUPABASE_IMAGELINK}${o.category}/${o.categoryChild}/${o.img}`}
                               width={300}
                               height={300}
-                              className={styles.imgPic}
+                              objectFit="cover"
+                              className={cn(
+                                "dura",
+                                isLoading ? "blur" : "notBlur"
+                              )}
+                              onLoadingComplete={() => setIsLoading(false)}
                               alt={o.img}
                             />
                             <p className={styles.pictureDate}>{o.date}</p>
