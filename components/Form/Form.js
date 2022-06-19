@@ -23,12 +23,8 @@ export default function Form() {
           `${post.category}/${post.categoryChild}/${post.file[0].name}`,
           post.file[0]
         );
-<<<<<<< HEAD
 
       const addRow = await supabase.from("GalleryTable").insert([
-=======
-      await supabase.from("GalleryTable").insert([
->>>>>>> 210126b880f008ea5e07247261b6f677da020f17
         {
           category: post.category.toLowerCase(),
           categoryChild: post.categoryChild.toLowerCase(),

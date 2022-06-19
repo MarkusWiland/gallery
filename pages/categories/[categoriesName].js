@@ -12,7 +12,6 @@ const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
 );
 export default function CategoriesName({ images }) {
-  console.log("IMAGES", images);
   const [selectedImg, setSelectedImg] = useState(null);
 
   const [image, setImages] = useState(images);
