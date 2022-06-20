@@ -5,28 +5,28 @@ import styles from "../../styles/Home.module.css";
 
 import { createClient } from "@supabase/supabase-js";
 import ImageGrid from "../../components/ImageGrid/ImageGrid";
-import Modal from "../../components/Modal/Modal";
+// import Modal from "../../components/Modal/Modal";
 import CategoriesHeader from "../../components/CategoriesHeader/CategoriesHeader";
+// import Image from "next/image";
+import { Modal, Image } from "antd";
+
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
 );
 export default function CategoriesName({ images }) {
-  const [selectedImg, setSelectedImg] = useState(null);
-
   const [image, setImages] = useState(images);
   const [categoryNames, setCategoryNames] = useState(images);
-
+  // const cn = (...classes) => {
+  //   return classes.filter(Boolean).join(" ");
+  // };
   return (
     <div className="section">
       <div className={styles.buttonsDiv}>
         <CategoriesHeader images={categoryNames} setImages={setImages} />
       </div>
       <div>
-        <ImageGrid setSelectedImg={setSelectedImg} images={image} />
-        {selectedImg && (
-          <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg} />
-        )}
+        <ImageGrid images={image} />
       </div>
     </div>
   );

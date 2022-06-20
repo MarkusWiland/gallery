@@ -5,17 +5,21 @@ import Image from "next/image";
 const Modal = ({ setSelectedImg, selectedImg }) => {
   const [height, setHeight] = useState(null);
   const [width, setWidth] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const ModalContent = {
     display: "flex",
     flexDirection: "column",
     width: width,
     height: height > 800 ? "80%" : height,
+    backgroundColor: "white",
     position: "relative",
     borderRadius: "4px",
   };
-  console.log(typeof height);
-  console.log("width", width);
-  const [isLoading, setIsLoading] = useState(true);
+  const modalRelative = {
+    position: "relative",
+    width: width,
+    height: height,
+  };
 
   const handleClick = (e) => {
     if (e.target.classList.contains("backdrop")) {
@@ -37,11 +41,12 @@ const Modal = ({ setSelectedImg, selectedImg }) => {
               className="closeIcon"
             />
           </div>*/}
-          <div className="modalRelative">
+          <div style={modalRelative}>
             <Image
               src={`${process.env.NEXT_PUBLIC_SUPABASE_IMAGELINK}${selectedImg.category}/${selectedImg.categoryChild}/${selectedImg.img}`}
               layout="fill"
               alt={selectedImg.img}
+              id="img"
               objectFit={height > 800 ? "contain" : ""}
               className={cn("dura", isLoading ? "blur" : "notBlur")}
               onLoadingComplete={(e) => {

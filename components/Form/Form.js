@@ -29,6 +29,7 @@ export default function Form() {
           category: post.category.toLowerCase(),
           categoryChild: post.categoryChild.toLowerCase(),
           img: post.file[0].name,
+          alt: post.alt,
           date: watch("dateInput")?.toLocaleString("sv-SE").substr(0, 10),
         },
       ]);
@@ -54,6 +55,8 @@ export default function Form() {
         <input {...register("category", { required: true, maxLength: 20 })} />
         <label>Kategori Child</label>
         <input {...register("categoryChild", { pattern: /^[A-Za-z]+$/i })} />
+        <label>Alt</label>
+        <input {...register("alt")} />
         <label>Välj bild</label>
         <input {...register("file")} type="file" name="file" />
         <label>Välj Datum</label>

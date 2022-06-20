@@ -41,7 +41,6 @@ export default function Home({ images }) {
             .filter((o, i, self) => self.indexOf(o) === i)
             .map((category, i) => (
               <div className={styles.gridItem} key={i}>
-                <h2>{category}</h2>
                 <div className={`${styles.pic}`}>
                   {images.map((o, i) => {
                     if (o.category === category) {
@@ -66,6 +65,8 @@ export default function Home({ images }) {
                       );
                     }
                   })}
+
+                  <div className={styles.text}>{category}</div>
                 </div>
               </div>
             ))}
