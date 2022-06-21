@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "../../styles/Home.module.css";
 export default function CategoriesHeader({ images, setImages }) {
+  const [active, setActive] = useState(null);
   const router = useRouter();
   const filtData = images.filter(
     (a, i, self) =>
@@ -16,6 +17,9 @@ export default function CategoriesHeader({ images, setImages }) {
       return a.categoryChild === categoryChildSelected;
     }
   });
+  function handleActiveClick(i) {
+    setActive(i);
+  }
   useEffect(() => {
     if (filt.length > 0) {
       setImages(filt);
@@ -27,8 +31,11 @@ export default function CategoriesHeader({ images, setImages }) {
         Tillbaka
       </button>
       <button
-        className={styles.button}
-        onClick={() => setCategoryChildSelected(null)}
+        className={`${active === null ? "active" : ""} ${styles.button}`}
+        onClick={() => {
+          handleActiveClick(null);
+          setCategoryChildSelected(null);
+        }}
       >
         All
       </button>
@@ -36,9 +43,12 @@ export default function CategoriesHeader({ images, setImages }) {
         <>
           <button
             key={o.id}
-            className={styles.button}
+            className={`${active === i ? "active" : ""} ${styles.button}`}
             // href={`/categories/${routerName}/${o.categoryChild}`}
-            onClick={() => setCategoryChildSelected(o.categoryChild)}
+            onClick={() => {
+              handleActiveClick(i);
+              setCategoryChildSelected(o.categoryChild);
+            }}
           >
             {o.categoryChild}
           </button>

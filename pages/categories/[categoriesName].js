@@ -2,13 +2,11 @@ import { useRouter } from "next/router";
 import { React, useState, useEffect } from "react";
 
 import styles from "../../styles/Home.module.css";
-
+import { motion } from "framer-motion";
 import { createClient } from "@supabase/supabase-js";
 import ImageGrid from "../../components/ImageGrid/ImageGrid";
-// import Modal from "../../components/Modal/Modal";
+
 import CategoriesHeader from "../../components/CategoriesHeader/CategoriesHeader";
-// import Image from "next/image";
-import { Modal, Image } from "antd";
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -25,9 +23,9 @@ export default function CategoriesName({ images }) {
       <div className={styles.buttonsDiv}>
         <CategoriesHeader images={categoryNames} setImages={setImages} />
       </div>
-      <div>
+      <motion.div animate={{ opacity: 1 }} initinal={{ opcaity: 0 }} layout>
         <ImageGrid images={image} />
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -41,15 +39,22 @@ export const getStaticPaths = async () => {
   return { paths, fallback: false };
 };
 export async function getStaticProps({ params }) {
-  const { data, error } = await supabaseAdmin
-    .from("GalleryTable")
-    .select("*")
-    .eq("category", params.categoriesName)
-    .order("created_at", { ascending: false });
-
-  return {
-    props: {
-      images: data,
-    },
-  };
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("GalleryTable")
+      .select("*")
+      .eq("category", params.categoriesName)
+      .order("created_at", { ascending: false });
+    if (error || !data) {
+      return { notFound: true };
+    }
+    return {
+      props: {
+        images: data,
+      },
+      revalidate: 10,
+    };
+  } catch (e) {
+    return { notFound: true };
+  }
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import Image from "next/image";
+import { motion } from "framer-motion";
 import styles from "../../styles/Home.module.css";
 import ModalImage from "react-modal-image";
 const ImageGrid = ({ images }) => {
@@ -10,7 +10,7 @@ const ImageGrid = ({ images }) => {
     <div className={`${styles.categoriesImage}`}>
       {images?.map((image, i) => {
         return (
-          <div key={image.id} className={styles.galleryItem}>
+          <motion.div layout key={image.id} className={styles.galleryItem}>
             <div className={styles.galleryImage}>
               <ModalImage
                 small={`${process.env.NEXT_PUBLIC_SUPABASE_IMAGELINK}${image.category}/${image.categoryChild}/${image.img}`}
@@ -24,7 +24,7 @@ const ImageGrid = ({ images }) => {
               />
             </div>
             <div className={styles.galleryText}>@MarkusWiland</div>
-          </div>
+          </motion.div>
         );
       })}
     </div>

@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { regexExp } from "../../helpers/regex";
 export default function Auth() {
   const [email, setEmail] = useState("");
-
+  const [visible, setVisible] = useState(false);
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
@@ -86,27 +86,30 @@ export default function Auth() {
   return (
     <>
       <div className="logIn">
-        <form onSubmit={handleSubmit}>
-          <div>
-            <input
-              className="inputField"
-              type="email"
-              placeholder="Your email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            {/* <input
-              className="inputField"
-              type="password"
-              placeholder="password"
-              onChange={(e) => setPassword(e.target.value)}
-            /> */}
-          </div>
-          <div>
-            <button>
-              <span>Logga in</span>
-            </button>
-          </div>
-        </form>
+        <h3 onClick={() => setVisible(!visible)}>Logga in</h3>
+        {visible && (
+          <form onSubmit={handleSubmit}>
+            <div>
+              <input
+                className="inputField"
+                type="email"
+                placeholder="Your email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {/* <input
+                   className="inputField"
+                   type="password"
+                   placeholder="password"
+                   onChange={(e) => setPassword(e.target.value)}
+                 /> */}
+            </div>
+            <div>
+              <button>
+                <span>Logga in</span>
+              </button>
+            </div>
+          </form>
+        )}
       </div>
       <ToastContainer />
     </>

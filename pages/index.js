@@ -33,8 +33,10 @@ export default function Home({ images }) {
 
       <main className="section">
         {!session ? <Auth /> : <Form />}
-
-        <h3>Location</h3>
+        <div className={styles.information}>
+          <img src="/wilandfotograf.png" alt="wilandfotograf" />
+          <p>Välkommen till WilandFotograf. Jag är en hobby fotograf.</p>
+        </div>
         <section className={styles.grid}>
           {images
             .map((o) => o.category)
@@ -101,15 +103,22 @@ export default function Home({ images }) {
   );
 }
 export async function getStaticProps() {
-  const { data, error } = await supabase.from("GalleryTable").select("*");
-
-  return {
-    props: {
-      images: data,
-    },
-    revalidate: 10,
-  };
+  try {
+    const { data, error } = await supabase.from("GalleryTable").select("*");
+    if (error || !data) {
+      return { notFound: true };
+    }
+    return {
+      props: {
+        images: data,
+      },
+      revalidate: 10,
+    };
+  } catch (e) {
+    return { notFound: true };
+  }
 }
+
 // export async function getStaticProps() {
 //   const results = await fetch(
 //     `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/resources/image`,

@@ -38,6 +38,15 @@ position: relative;
   cursor:pointer;
   transition:.5s ease-in-out;
 }
+.information{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 0rem 0rem 3rem 0rem;
+}
 /* .galleryItem:nth-child(1) {
   grid-column: span 3;
   grid-row: span 2;
