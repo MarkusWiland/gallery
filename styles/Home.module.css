@@ -7,17 +7,17 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 .categoriesImage {
-  max-width:1200px;
+  max-width: 1200px;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-auto-rows:200px 300px;
+  grid-auto-rows: 200px 300px;
   grid-auto-flow: dense;
-  gap: .75rem;
+  gap: 0.75rem;
 }
-.galleryItem{
-  width:100%;
-height:100%;
-position: relative;
+.galleryItem {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 .galleryItem .galleryImage {
   width: 100%;
@@ -25,20 +25,20 @@ position: relative;
   overflow: hidden;
 }
 .galleryImage > div {
-  height:100%;
-  width:100%;
+  height: 100%;
+  width: 100%;
 }
-.galleryImg { 
-  width:100%;
-  height:100%;
+.galleryImg {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 4px;
 
-  object-position:center;
-  cursor:pointer;
-  transition:.5s ease-in-out;
+  object-position: center;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
 }
-.information{
+.information {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -77,10 +77,9 @@ grid-row: span 1;
   grid-column: span 2;
   grid-row: span 2;
   } */
-  
 
-.galleryItem:hover .galleryImage img{
-
+.galleryItem:hover .galleryImage img {
+  border-radius: 4px;
   transform: scale(1.5);
 }
 .galleryItem .galleryText {
@@ -96,11 +95,11 @@ grid-row: span 1;
   justify-content: flex-end;
   align-items: flex-end;
   color: white;
-  font-size: .5rem;
+  font-size: 0.5rem;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
-  transition: .5s ease-in-out;
+  transition: 0.5s ease-in-out;
 }
 /* .galleryItem .galleryText {
   opacity: 0;
@@ -165,9 +164,8 @@ grid-row: span 1;
   padding: 0.2rem;
   position: absolute;
 }
-.pic > span:hover + .text{
-opacity: 1;
-
+.pic > span:hover + .text {
+  opacity: 1;
 }
 .pic > span:nth-child(1) {
   right: -6px;
@@ -179,7 +177,7 @@ opacity: 1;
   transform: rotate(5deg);
   top: 5px;
 }
-.text{
+.text {
   position: absolute;
   opacity: 0;
   top: 50%;
@@ -198,7 +196,7 @@ opacity: 1;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
-  transition: .5s ease-in-out;
+  transition: 0.5s ease-in-out;
 }
 .categories {
   margin-bottom: 2rem;
@@ -215,9 +213,9 @@ opacity: 1;
 
 .imgPadding {
   padding: 0rem 0rem 0rem 0rem;
-  background-color: rgb(237, 237, 237); 
+  background-color: rgb(237, 237, 237);
   border-radius: 4px;
-  box-shadow: 1px 2px 5px 2px rgba(83, 83, 83, 0.4); 
+  box-shadow: 1px 2px 5px 2px rgba(83, 83, 83, 0.4);
 }
 
 .imgPadding > p {

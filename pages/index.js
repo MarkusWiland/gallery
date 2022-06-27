@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { Modal } from "antd";
+import "antd/es/modal/style/index.css";
+
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
@@ -6,8 +9,22 @@ import Link from "next/link";
 import { supabase } from "../utils/supabaseClient";
 import Auth from "../components/Auth/Auth";
 import Form from "../components/Form/Form";
+import Map from "../components/GoogleMap/Map";
 
 export default function Home({ images }) {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const cn = (...classes) => {
@@ -32,11 +49,20 @@ export default function Home({ images }) {
       </Head>
 
       <main className="section">
-        {!session ? <Auth /> : <Form />}
+        <Map />
+        {!session ? <Auth /> : <button onClick={showModal}>click</button>}
         <div className={styles.information}>
           <img src="/wilandfotograf.png" alt="wilandfotograf" />
           <p>Välkommen till WilandFotograf. Jag är en hobby fotograf.</p>
         </div>
+        <Modal
+          title="Basic Modal"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <p>coool</p>
+        </Modal>
         <section className={styles.grid}>
           {images
             .map((o) => o.category)
@@ -98,6 +124,15 @@ export default function Home({ images }) {
               </div>
             ))} */}
         </section>
+        <footer>
+          <div>
+            <h3>Resmål</h3>
+            <ul>
+              <li>Maldivera</li>
+            </ul>
+          </div>
+          <div></div>
+        </footer>
       </main>
     </div>
   );

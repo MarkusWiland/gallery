@@ -14,8 +14,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { supabase } from "../../utils/supabaseClient";
 export default function Form() {
   const { register, handleSubmit, reset, watch, control } = useForm();
+
+  console.log("WEEEIä", supabase.auth.user());
   const onSubmit = async (post) => {
-    console.log("user", supabase.auth.user());
     try {
       const storeImages = await supabase.storage
         .from("gallery")
@@ -30,6 +31,7 @@ export default function Form() {
           categoryChild: post.categoryChild.toLowerCase(),
           img: post.file[0].name,
           alt: post.alt,
+
           date: watch("dateInput")?.toLocaleString("sv-SE").substr(0, 10),
         },
       ]);
