@@ -69,6 +69,29 @@ h6 {
   color: white;
   font-weight: bold;
 }
+.absolut {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.button {
+  padding: 0.5rem;
+  border: none;
+}
+.footer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.footer h3 {
+  text-align: center;
+}
+.footerFlex {
+  display: flex;
+  justify-content: space-between;
+}
+.footerFlex li {
+  color: white;
+}
 /* MODAL */
 /* .ModalImage {
   object-fit: contain;

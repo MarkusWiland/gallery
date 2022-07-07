@@ -1,36 +1,50 @@
 import { useEffect, useState } from "react";
-import { Modal } from "antd";
-import "antd/es/modal/style/index.css";
-
+import Modal from "react-modal";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import { supabase } from "../utils/supabaseClient";
-import Auth from "../components/Auth/Auth";
+import { useAuth } from "../components/Auth/Auth";
 import Form from "../components/Form/Form";
-import Map from "../components/GoogleMap/Map";
+import Header from "../components/Header/Header";
 
+const customStyles = {
+  overlay: {
+    background: "rgba(0,0,0,0.4)",
+  },
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    width: "400px",
+    bottom: "auto",
+    backgroundColor: "rgba(0,0,0,0.8)",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
+const bg = {
+  overlay: {
+    background: "#FFFF00",
+  },
+};
+import { modalIsOpen, setIsOpen } from "../components/Auth/Auth";
 export default function Home({ images }) {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+  }
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+  function closeModal() {
+    setIsOpen(false);
+  }
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const cn = (...classes) => {
     return classes.filter(Boolean).join(" ");
   };
-  const user = supabase.auth.user();
+
   useEffect(() => {
     setSession(supabase.auth.session());
 
@@ -49,19 +63,18 @@ export default function Home({ images }) {
       </Head>
 
       <main className="section">
-        <Map />
-        {!session ? <Auth /> : <button onClick={showModal}>click</button>}
         <div className={styles.information}>
           <img src="/wilandfotograf.png" alt="wilandfotograf" />
           <p>Välkommen till WilandFotograf. Jag är en hobby fotograf.</p>
         </div>
         <Modal
-          title="Basic Modal"
-          visible={isModalVisible}
-          onOk={handleOk}
-          onCancel={handleCancel}
+          isOpen={modalIsOpen}
+          onAfterOpen={afterOpenModal}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
         >
-          <p>coool</p>
+          <Form />
         </Modal>
         <section className={styles.grid}>
           {images
@@ -75,19 +88,21 @@ export default function Home({ images }) {
                       return (
                         <Link href={`/categories/${o.category}`} key={o.id}>
                           <span>
-                            <Image
-                              src={`${process.env.NEXT_PUBLIC_SUPABASE_IMAGELINK}${o.category}/${o.categoryChild}/${o.img}`}
-                              width={300}
-                              height={300}
-                              objectFit="cover"
-                              className={cn(
-                                "dura",
-                                isLoading ? "blur" : "notBlur"
-                              )}
-                              onLoadingComplete={() => setIsLoading(false)}
-                              alt={o.img}
-                            />
-                            <p className={styles.pictureDate}>{o.date}</p>
+                            <a>
+                              <Image
+                                src={`${process.env.NEXT_PUBLIC_SUPABASE_IMAGELINK}${o.category}/${o.categoryChild}/${o.img}`}
+                                width={300}
+                                height={300}
+                                objectFit="cover"
+                                className={cn(
+                                  "dura",
+                                  isLoading ? "blur" : "notBlur"
+                                )}
+                                onLoadingComplete={() => setIsLoading(false)}
+                                alt={o.img}
+                              />
+                              <p className={styles.pictureDate}>{o.date}</p>
+                            </a>
                           </span>
                         </Link>
                       );
@@ -124,19 +139,42 @@ export default function Home({ images }) {
               </div>
             ))} */}
         </section>
-        <footer>
+        <footer className="footer">
           <div>
-            <h3>Resmål</h3>
-            <ul>
-              <li>Maldivera</li>
-            </ul>
+            <h3>Önske resmål</h3>
+            <div className="footerFlex">
+              <ul>
+                <li>Maldivera</li>
+                <li>Tanzania (Safari)</li>
+                <li>Australien</li>
+              </ul>
+            </div>
           </div>
-          <div></div>
+          <div>
+            <h3>Länder jag varit i</h3>
+            <div className="footerFlex">
+              <ul>
+                <li>Spanien</li>
+                <li>Zanzibar</li>
+                <li>Kroatien (segelbåt)</li>
+                <li>Turkiet</li>
+                <li>Thailand</li>
+              </ul>
+              <ul>
+                <li>Spanien</li>
+                <li>Zanzibar</li>
+                <li>Kroatien (segelbåt)</li>
+                <li>Turkiet</li>
+                <li>Thailand</li>
+              </ul>
+            </div>
+          </div>
         </footer>
       </main>
     </div>
   );
 }
+
 export async function getStaticProps() {
   try {
     const { data, error } = await supabase.from("GalleryTable").select("*");
@@ -153,37 +191,3 @@ export async function getStaticProps() {
     return { notFound: true };
   }
 }
-
-// export async function getStaticProps() {
-//   const results = await fetch(
-//     `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/resources/image`,
-//     {
-//       headers: {
-//         Authorization: `Basic ${Buffer.from(
-//           process.env.CLOUDINARY_API_KEY +
-//             ":" +
-//             process.env.CLOUDINARY_API_SECRET
-//         ).toString("base64")}`,
-//       },
-//     }
-//   ).then((r) => r.json());
-
-//   const { resources } = results;
-//   const images = resources.map((resource) => {
-//     return {
-//       img: resource.secure_url,
-//       url: resource.url,
-//       width: resource.width,
-//       height: resource.height,
-//       id: resource.asset_id,
-//       title: resource.public_id,
-//       date: resource.created_at,
-//     };
-//   });
-//   console.log("results", results);
-//   return {
-//     props: {
-//       images,
-//     },
-//   };
-// }

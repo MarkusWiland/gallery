@@ -17,6 +17,7 @@ export default function Form() {
 
   console.log("WEEEIä", supabase.auth.user());
   const onSubmit = async (post) => {
+    console.log(post.file);
     try {
       const storeImages = await supabase.storage
         .from("gallery")
@@ -31,7 +32,6 @@ export default function Form() {
           categoryChild: post.categoryChild.toLowerCase(),
           img: post.file[0].name,
           alt: post.alt,
-
           date: watch("dateInput")?.toLocaleString("sv-SE").substr(0, 10),
         },
       ]);
@@ -60,7 +60,7 @@ export default function Form() {
         <label>Alt</label>
         <input {...register("alt")} />
         <label>Välj bild</label>
-        <input {...register("file")} type="file" name="file" />
+        <input {...register("file")} type="file" name="file" multiple />
         <label>Välj Datum</label>
         <Controller
           control={control}
@@ -76,10 +76,6 @@ export default function Form() {
         />
         <button type="submit">Skicka</button>
       </form>
-
-      <button className="button block" onClick={() => supabase.auth.signOut()}>
-        Sign Out
-      </button>
 
       <ToastContainer />
     </>

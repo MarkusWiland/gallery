@@ -1,117 +1,55 @@
-import { useState } from "react";
-import { supabaseAuth } from "../../utils/supabaseClient";
-import { ToastContainer, toast } from "react-toastify";
-import { regexExp } from "../../helpers/regex";
-export default function Auth() {
-  const [email, setEmail] = useState("");
-  const [visible, setVisible] = useState(false);
-  const [password, setPassword] = useState("");
+import { createContext, useContext, useEffect, useState } from "react";
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!email) {
-      toast.error("Du måste skriva i en email", {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 3000,
-      });
-      return;
-    } else if (regexExp.test(!email)) {
-      toast.error("Du måste skriva i en valid Email", {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 3000,
-      });
-      return;
-    }
+export const AuthContext = createContext();
 
-    const { user, session, error } = await supabaseAuth.auth.signIn({
-      email: email,
-    });
-    console.log("user", user);
-    console.log("session", session);
-    toast.success("SUCCESS", {
-      position: toast.POSITION.BOTTOM_LEFT,
-      autoClose: 3000,
-    });
+export const AuthProvider = ({ supabaseAdmin, ...props }) => {
+  const [session, setSession] = useState(null);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
-    if (error) {
-      toast.error(error, {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 3000,
-      });
-      return;
-    }
-    // if (regex.test(email) && password.length > 5) {
-    //   try {
-    //     const user = await supabaseAuth.auth.login(email, password);
-    //     console.log(user);
-    //     toast.success("Du är nu inloggad", {
-    //       position: toast.POSITION.BOTTOM_LEFT,
-    //       autoClose: 3000,
-    //     });
-    //   } catch (err) {
-    //     console.log(err.error);
-    //     toast.error(`Något gick fel, ${err}`, {
-    //       position: toast.POSITION.BOTTOM_LEFT,
-    //     });
-    //   }
-    // }
-  };
-  //   const signIn = async () => {
-  //     if (!email) {
-  //       toast.error("Du måste skriva i en email", {
-  //         position: toast.POSITION.BOTTOM_LEFT,
-  //         autoClose: 3000,
-  //       });
-  //       return;
-  //     }
+  useEffect(() => {
+    const activeSession = supabaseAdmin.auth.session();
+    setSession(activeSession);
+    setUser(activeSession?.user ?? null);
 
-  //     const { user, session, error } = await supabaseAuth.auth.signIn({
-  //       email: email,
-  //     });
-  //     toast.success("SUCCESS", {
-  //       position: toast.POSITION.BOTTOM_LEFT,
-  //       autoClose: 3000,
-  //     });
+    const { data: authListener } = supabaseAdmin.auth.onAuthStateChange(
+      (event, currentSession) => {
+        setSession(currentSession);
+        setUser(currentSession?.user ?? null);
+        fetch("/api/auth", {
+          method: "POST",
+          headers: new Headers({ "Content-Type": "application/json" }),
+          credentials: "same-origin",
+          body: JSON.stringify({ event, session: currentSession }),
+        }).then((res) => res.json());
+      }
+    );
 
-  //     if (error) {
-  //       toast.error(error, {
-  //         position: toast.POSITION.BOTTOM_LEFT,
-  //         autoClose: 3000,
-  //       });
-  //       console.log({ error });
-  //       return;
-  //     }
-  //   };
-
+    return () => {
+      authListener?.unsubscribe();
+    };
+  }, []);
   return (
-    <>
-      <div className="logIn">
-        <h3 onClick={() => setVisible(!visible)}>Logga in</h3>
-        {visible && (
-          <form onSubmit={handleSubmit}>
-            <div>
-              <input
-                className="inputField"
-                type="email"
-                placeholder="Your email"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              {/* <input
-                   className="inputField"
-                   type="password"
-                   placeholder="password"
-                   onChange={(e) => setPassword(e.target.value)}
-                 /> */}
-            </div>
-            <div>
-              <button>
-                <span>Logga in</span>
-              </button>
-            </div>
-          </form>
-        )}
-      </div>
-      <ToastContainer />
-    </>
+    <AuthContext.Provider
+      value={{
+        session,
+        modalIsOpen,
+        setIsOpen,
+        user,
+        signOut: () => supabaseAdmin.auth.signOut(),
+      }}
+      {...props}
+    />
   );
-}
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === null) {
+    return { redirectTo: "" };
+  }
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};
